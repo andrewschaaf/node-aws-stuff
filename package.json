@@ -1,0 +1,24 @@
+{
+  "name": "aws-stuff",
+  "version": "0.0.1",
+  
+  "description": "{S3,...}{Server,Client}, e.g. for your tests.",
+  "url": "https://github.com/andrewschaaf/node-aws-stuff",
+  
+  "main": "lib/aws-stuff.js",
+  
+  "dependencies": {
+    "underscore": ">=1.1.7",
+    "async": ">=0.1.9",
+    "strftime": ">=0.4.6",
+    "tafa-misc-util": ">=0.1.6",
+    "s3-post": ">=0.0.3",
+  },
+  
+  "author": "Andrew Schaaf <andrew@andrewschaaf.com> (http://andrewschaaf.com)",
+  
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andrewschaaf/node-aws-stuff.git"
+  }
+}
