@@ -1,6 +1,6 @@
 {
   "name": "aws-stuff",
-  "version": "0.0.1",
+  "version": "0.0.2",
   
   "description": "{S3,...}{Server,Client}, e.g. for your tests.",
   "url": "https://github.com/andrewschaaf/node-aws-stuff",
