@@ -6,6 +6,7 @@ assert = require 'assert'
 
 
 PORT = 17299
+BUCKET = "takin-mah-bukket"
 
 
 policy = {}
@@ -18,28 +19,40 @@ post = (key, data, callback) ->
     key: key
     data: data
     customUrl: "https://localhost:#{PORT}"
-    bucket: "mah-bukket"
+    bucket: BUCKET
     signature64: signature64
     policy64: policy64
     AWSAccessKeyId: "satoshi"
   }, callback
 
 
+throwe = (callback) ->
+  (e, args...) ->
+    throw e if e
+    callback e, args...
+
+
 main = () ->
   server = new S3Server verbose:true
   server.listen PORT, () ->
-    foo = new S3Client customUrl:"https://localhost:#{PORT}", bucket:"foo"
+    foo = new S3Client customUrl:"https://localhost:#{PORT}", bucket:BUCKET
+    
+    # POST, GET
     post "k1", "v1", () ->
-      
-      foo.put k:"k1", data:"v1", (e) ->
-        foo.get k:"k1", (e, data) ->
-          assert.equal data.toString(), "v1"
-          
-          foo.get k:"404-slkdfbske", (e, data) ->
-            assert.ok e, "Expected error for key that DNE"
+      foo.get {k:"k1"}, throwe (e, data) ->
+        assert.equal data.toString(), "v1"
+        
+        # PUT, GET
+        foo.put {k:"k2", data:"v2"}, throwe (e) ->
+          foo.get {k:"k2"}, throwe (e, data) ->
+            assert.equal data.toString(), "v2"
             
-            console.log "OK"
-            process.exit 0
+            # GET 404
+            foo.get {k:"404-slkdfbske"}, (e, data) ->
+              assert.ok e, "Expected error for key that DNE"
+              
+              console.log "OK"
+              process.exit 0
 
 
 if not module.parent

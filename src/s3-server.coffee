@@ -85,14 +85,14 @@ class S3Server
         
         # POST Object
         else if req.method == 'POST'
-          parseMultipartData req.headers['content-type'], data, (e, parts) ->
+          parseMultipartData req.headers['content-type'], data, (e, parts) =>
             throw e if e
             
-            # policy, signature, AWSAccessKeyId
             k = parts.key
             data = parts.file
+            # other parts: policy, signature, AWSAccessKeyId
             
-            #@storage.put bucket, k, data, AWSAccessKeyId
+            @storage.put bucket, k, data
             res.writeHead 204, {TODO: "TODO"}
             res.end()
         
