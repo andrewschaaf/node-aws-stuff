@@ -82,6 +82,66 @@ class S3Client
           xml: xml
         }
   
+  #### [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketDELETE.html)
+  deleteBucket: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [DELETE Bucket policy](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketDELETEpolicy.html)
+  deleteBucketPolicy: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [DELETE Bucket website](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketDELETEwebsite.html)
+  deleteBucketWebsite: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket acl](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketGETacl.html)
+  getBucketAcl: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket policy](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketGETpolicy.html)
+  getBucketPolicy: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket location](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketGETlocation.html)
+  getBucketLocation: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket logging](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketGETlogging.html)
+  getBucketLogging: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket notification](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketGETnotification.html)
+  getBucketNotification: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket Object versions](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketGETVersion.html)
+  getBucketObjectVersions: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket requestPayment](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTrequestPaymentGET.html)
+  getBucketRequestPayment: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [GET Bucket versioning](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?RESTBucketGETversioningStatus.html)
+  getBucketVersioning: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
+  #### [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/index.html?mpUploadListMPUpload.html)
+  listMultipartUploads: ({}, callback) ->
+    throw new Error "TODO"
+    @req '', 
+  
   req: (method, opt, callback) ->
     opt.method = method
     opt.host = @host
