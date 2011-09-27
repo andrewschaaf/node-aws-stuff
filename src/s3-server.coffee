@@ -56,7 +56,10 @@ class S3Server
     readData req, (data) =>
       
       if @opt.verbose
-        console.log "[S3Server] #{req.method} #{req.url} [#{data.length}-byte body]"
+        s = "[S3Server] #{req.method} #{req.url}"
+        if data.length > 0
+          s += " [#{data.length}-byte body]"
+        console.log s
       
       m = req.headers.host?.match /(.*)\.s3\.amazonaws\.com$/
       if not m
