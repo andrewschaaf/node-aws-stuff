@@ -42,7 +42,7 @@ class S3MockStorage
 
 
 class S3Server
-  constructor: () ->
+  constructor: (@opt={}) ->
     @server = https.createServer {
       key: fs.readFileSync "#{__dirname}/../ssl-key.pem"
       cert: fs.readFileSync "#{__dirname}/../ssl-cert.pem"
@@ -54,6 +54,10 @@ class S3Server
   
   handler: (req, res) ->
     readData req, (data) =>
+      
+      if @opt.verbose
+        console.log "[S3Server] #{req.method} #{req.url} [#{data.length}-byte body]"
+      
       m = req.headers.host?.match /(.*)\.s3\.amazonaws\.com$/
       if not m
         res.writeHead 404, {}

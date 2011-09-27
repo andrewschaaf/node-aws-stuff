@@ -26,7 +26,7 @@ post = (key, data, callback) ->
 
 
 main = () ->
-  server = new S3Server
+  server = new S3Server verbose:true
   server.listen PORT, () ->
     foo = new S3Client customUrl:"https://localhost:#{PORT}", bucket:"foo"
     post "k1", "v1", () ->
