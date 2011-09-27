@@ -2,6 +2,7 @@
 fs = require 'fs'
 url = require 'url'
 https = require 'https'
+parted = require 'parted'
 {startswith} = require 'tafa-misc-util'
 {readData} = require 'tafa-misc-util'
 
@@ -80,13 +81,47 @@ class S3Server
         
         # POST Object
         else if req.method == 'POST'
-          @storage.put bucket, k, data
-          res.writeHead 204, {TODO: "TODO"}
-          res.end()
+          parseMultipartData req.headers['content-type'], data, (e, parts) ->
+            throw e if e
+            
+            # policy, signature, AWSAccessKeyId
+            k = parts.key
+            data = parts.file
+            
+            #@storage.put bucket, k, data, AWSAccessKeyId
+            res.writeHead 204, {TODO: "TODO"}
+            res.end()
         
         else
           res.writeHead 404, {TODO: "TODO"}
           res.end '404-B'
+
+
+parseMultipartData = (contentType, data, callback) ->
+  
+  parts = {}
+  
+  p = new parted contentType, {}
+  
+  p.on 'error', (e) ->
+    callback e
+  
+  p.on 'part', (field, part) ->
+    parts[field] = part
+  
+  p.on 'data', (bytes) ->
+    
+  
+  p.on 'end', () ->
+    path = parts['file']
+    fs.readFile path, (e, data) ->
+      fs.unlink path, () ->
+      return callback e if e
+      parts['file'] = data
+      callback null, parts
+  
+  p.write data
+  p.end()
 
 
 module.exports =
