@@ -1,4 +1,5 @@
 
+_ = require 'underscore'
 fs = require 'fs'
 url = require 'url'
 http = require 'http'
@@ -22,6 +23,9 @@ class S3MockStorage
   
   get: (bucket, k) ->
     @_bucketItems(bucket)[k] or null
+  
+  keysInBucket: (bucket) ->
+    _.keys @_bucketItems(bucket)
   
   list: (bucket, GET) ->
     
@@ -59,6 +63,14 @@ class S3Server
   handler: (req, res) ->
     {pathname, query} = url.parse req.url, true
     readData req, (data) =>
+      
+      if req.url == '/extras/bucket.js'
+        keys = @storage.keysInBucket query.bucket
+        res.writeHead 200, 'Content-Type':'text/javascript'
+        res.end JSON.stringify {
+          keys: keys
+        }
+        return
       
       if @opt.verbose
         s = "[S3Server] #{req.method} #{req.url}"
