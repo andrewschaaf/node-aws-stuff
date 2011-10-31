@@ -1,6 +1,7 @@
 
 fs = require 'fs'
 url = require 'url'
+http = require 'http'
 https = require 'https'
 parted = require 'parted'
 {startswith} = require 'tafa-misc-util'
@@ -43,16 +44,20 @@ class S3MockStorage
 
 class S3Server
   constructor: (@opt={}) ->
-    @server = https.createServer {
-      key: fs.readFileSync "#{__dirname}/../ssl-key.pem"
-      cert: fs.readFileSync "#{__dirname}/../ssl-cert.pem"
-    }, ((req, res) => @handler req, res)
+    key = fs.readFileSync "#{__dirname}/../ssl-key.pem"
+    cert = fs.readFileSync "#{__dirname}/../ssl-cert.pem"
+    handler = ((req, res) => @handler req, res)
+    if @opt.protocol? == 'http'
+      @server = http.createServer handler
+    else
+      @server = https.createServer key:key, cert:cert, handler
     @storage = new S3MockStorage
   
   listen: (args...) ->
     @server.listen args...
   
   handler: (req, res) ->
+    {pathname, query} = url.parse req.url, true
     readData req, (data) =>
       
       if @opt.verbose

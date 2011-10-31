@@ -3,7 +3,7 @@
 <pre>
 {S3Server} = require 'aws-stuff'
 
-server = new S3Server
+server = new S3Server protocol:'http'   # default: 'https'
 server.listen PORT, () ->
   console.log "Listening on #{PORT}..."
 </pre>
