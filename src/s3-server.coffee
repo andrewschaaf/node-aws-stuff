@@ -64,7 +64,7 @@ class S3Server
     {pathname, query} = url.parse req.url, true
     readData req, (data) =>
       
-      if req.url == '/extras/bucket.js'
+      if pathname == '/extras/bucket.js'
         keys = @storage.keysInBucket query.bucket
         res.writeHead 200, 'Content-Type':'text/javascript'
         res.end JSON.stringify {
