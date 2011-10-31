@@ -50,18 +50,17 @@ class S3Server
   constructor: (@opt={}) ->
     key = fs.readFileSync "#{__dirname}/../ssl-key.pem"
     cert = fs.readFileSync "#{__dirname}/../ssl-cert.pem"
-    handler = ((req, res) => @handler req, res)
-    if @opt.protocol? == 'http'
-      @server = http.createServer handler
+    _handler = (req, res) => @handler req, res
+    if @opt.protocol? and @opt.protocol == 'http'
+      @server = http.createServer _handler
     else
-      @server = https.createServer key:key, cert:cert, handler
+      @server = https.createServer key:key, cert:cert, _handler
     @storage = new S3MockStorage
   
   listen: (args...) ->
     @server.listen args...
   
   handler: (req, res) ->
-    
     {pathname, query} = url.parse req.url, true
     if pathname == '/extras/bucket.js'
       keys = @storage.keysInBucket query.bucket
