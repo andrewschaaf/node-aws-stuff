@@ -61,16 +61,17 @@ class S3Server
     @server.listen args...
   
   handler: (req, res) ->
+    
     {pathname, query} = url.parse req.url, true
+    if pathname == '/extras/bucket.js'
+      keys = @storage.keysInBucket query.bucket
+      res.writeHead 200, 'Content-Type':'text/javascript'
+      res.end JSON.stringify {
+        keys: keys
+      }
+      return
+    
     readData req, (data) =>
-      
-      if pathname == '/extras/bucket.js'
-        keys = @storage.keysInBucket query.bucket
-        res.writeHead 200, 'Content-Type':'text/javascript'
-        res.end JSON.stringify {
-          keys: keys
-        }
-        return
       
       if @opt.verbose
         s = "[S3Server] #{req.method} #{req.url}"

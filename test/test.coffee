@@ -1,8 +1,9 @@
 
+https = require 'https'
 assert = require 'assert'
 {signPolicy, postToS3} = require 's3-post'
-{S3Client, S3Server} = require '../lib/aws-stuff'
-{timeoutSet} = require 'tafa-misc-util'
+{S3Client, S3Server} = require '../src/aws-stuff'
+{timeoutSet, readData} = require 'tafa-misc-util'
 
 
 PORT = 17299
@@ -26,6 +27,16 @@ post = (key, data, callback) ->
   }, callback
 
 
+simpleGet = (opt, cb) ->
+  opt.method = 'GET'
+  req = https.request opt, (res) ->
+    readData res, (data) ->
+      cb data
+  req.on 'error', (e) ->
+    throw e
+  req.end()
+
+
 throwe = (callback) ->
   (e, args...) ->
     throw e if e
@@ -33,7 +44,7 @@ throwe = (callback) ->
 
 
 main = () ->
-  server = new S3Server verbose:true
+  server = new S3Server verbose:true, protocol:'http'
   server.listen PORT, () ->
     foo = new S3Client customUrl:"https://localhost:#{PORT}", bucket:BUCKET
     
@@ -51,8 +62,10 @@ main = () ->
             foo.get {k:"404-slkdfbske"}, (e, data) ->
               assert.ok e, "Expected error for key that DNE"
               
-              console.log "OK"
-              process.exit 0
+              simpleGet host:"localhost", port:PORT, path:"/extras/bucket.js?bucket=#{BUCKET}", (data) ->
+                assert.ok data.length > 0
+                console.log "OK"
+                process.exit 0
 
 
 if not module.parent
