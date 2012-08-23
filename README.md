@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/andrewschaaf/node-aws-stuff.png)](http://travis-ci.org/andrewschaaf/node-aws-stuff)
 
 ## S3Server
 <pre>
